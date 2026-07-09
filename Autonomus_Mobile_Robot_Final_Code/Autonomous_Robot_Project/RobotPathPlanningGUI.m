@@ -164,7 +164,14 @@ axes(ax);
 [x,y] = ginput(1);
 
 zAns = inputdlg('Enter Start Height (Z, 1-20):','Start Z');
+if isempty(zAns)
+    return;
+end
 z = round(str2double(zAns{1}));
+if isnan(z) || z < 1 || z > 20
+    errordlg('Please enter a valid number between 1 and 20.');
+    return;
+end
 
 starts{currentRobot} = [round(y) round(x) z];
 
@@ -188,7 +195,10 @@ function selectGoal(~,~)
 axes(ax);
 [x,y] = ginput(1);
 
-zAns = inputdlg('Enter Goal Height (Z, 1-20):','Goal Z');
+zAns = inputdlg('Enter Z coordinate (1-20):', 'Goal Z Position', 1, {'10'});
+if isempty(zAns)
+    return;  % user cancelled, exit function
+end
 z = round(str2double(zAns{1}));
 
 goals{currentRobot} = [round(y) round(x) z];
